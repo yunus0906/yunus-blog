@@ -1,4 +1,4 @@
-# Astro Theme Pure
+# 测试一下
 
 [English](./README.md) | [简体中文](./README-zh-CN.md)
 
