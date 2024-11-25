@@ -3,7 +3,7 @@ import type { SiteConfig, MenuLinks, SocialLinks } from '@/types'
 export const siteConfig: SiteConfig = {
   // === Required meta properties ===
   // Used as both a meta property (src/components/BaseHead.astro L:31 + L:49) & the generated satori png (src/pages/og-image/[slug].png.ts)
-  author: 'CWorld / Arthals',
+  author: '改个名',
   // Meta property used to construct the meta title property, found in src/components/BaseHead.astro L:11
   title: 'Astro Theme Pure',
   // Meta property used to generate your sitemap and canonical URLs in your final build

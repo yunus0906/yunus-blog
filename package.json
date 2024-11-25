@@ -2,7 +2,6 @@
   "name": "astro-blog",
   "type": "module",
   "version": "0.0.1",
-  "packageManager": "bun@1.1.20",
   "scripts": {
     "dev": "astro check --watch & astro dev",
     "start": "astro dev",
