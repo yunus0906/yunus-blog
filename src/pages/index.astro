@@ -13,11 +13,12 @@ import Button from '@/components/Button.astro'
 import { siteConfig } from '@/site-config'
 import { getAllCollections, sortMDByDate } from '@/utils'
 
-import avatar from '@/assets/avatar.png'
+import avatar from '@/assets/avatar.jpg'
 
-const languages = ['Html', 'JavaScript', 'CSS', 'Shell']
-const frontend = ['TypeScript', 'Vite', 'Webpack', 'Astro']
-const backend = ['Vercel', 'Waline']
+const languages = ['JavaScript', 'Html5', 'Python', 'Java']
+const frontend = ['TypeScript', 'VueJs', 'Vite', 'Astro', 'uni-app']
+const backend = ['NodeJs', 'MySql']
+const service = ['Vercel']
 
 const MAX_POSTS = 10
 const allPosts = await getAllCollections()
@@ -57,11 +58,10 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
     </section>
 
     <Section title='About'>
-      <p class='text-muted-foreground'>Developer / Designer</p>
+      <p class='text-muted-foreground'>Web开发 / 赛博农民</p>
       <p class='text-muted-foreground'>
-        Lorem ipsum dolor sit amet, vidit suscipit at mei. Quem denique mea id. Usu ei regione
-        indoctum dissentiunt, cu meliore fuisset mei, vel quod voluptua ne. Ex dicat impedit mel, at
-        eum oratio possit voluptatum.
+        这里是敖烈的存档点<br />
+        欢迎你的到来，希望能在这里找到你需要的。
       </p>
       <Button title='More about me' class='w-fit self-end' href='/about' style='ahead' />
     </Section>
@@ -109,7 +109,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
       />
     </Section> */
     }
-    <Section title='Education'>
+    <!--<Section title='Education'>
       <Card
         as='a'
         heading='Lorem ipsum'
@@ -118,47 +118,35 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
         href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
       >
         {
-          /* <ul class='ms-4 list-disc text-muted-foreground'>
+           <ul class='ms-4 list-disc text-muted-foreground'>
           <li>
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis recusandae, ut
             molestiae laboriosam pariatur!
           </li>
           <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, pariatur!</li>
-        </ul> */
+        </ul>
         }
       </Card>
-    </Section>
+    </Section>-->
 
     <Section title='Website List'>
       <div class='grid grid-cols-1 gap-3 sm:grid-cols-2'>
         <ProjectCard
-          href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-          heading='Lorem ipsum'
-          subheading='dolor sit amet, oratio ornatus explicari pro ex'
+          href='https://chat.kfcvivo50.cc/'
+          heading='YunChat'
+          subheading='自用ChatGPT'
           imagePath='/src/assets/projects/alex-tyson-2BAXJ7ha74s-unsplash.jpg'
         />
         <ProjectCard
-          href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-          heading='Lorem ipsum'
-          subheading='dolor sit amet, oratio ornatus explicari pro ex'
+          href='https://search.kfcvivo50.cc/'
+          heading='电子榨菜'
+          subheading='无限视频资源，尽在指尖，随时分享'
           imagePath='/src/assets/projects/angelica-teran-Bk9hpaXHK4o-unsplash.jpg'
-        />
-        <ProjectCard
-          href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-          heading='Lorem ipsum'
-          subheading='dolor sit amet, oratio ornatus explicari pro ex'
-          imagePath='/src/assets/projects/kseniia-zapiatkina-yATU3rg8tNI-unsplash.jpg'
-        />
-        <ProjectCard
-          href='/projects'
-          heading='More projects'
-          subheading='Check out more projects'
-          imagePath='/src/assets/projects/wen-qiao-g_w8I64FiO0-unsplash.jpg'
         />
       </div>
     </Section>
 
-    <Section title='Certifications'>
+    <!--<Section title='Certifications'>
       <Card
         as='a'
         heading='Lorem ipsum'
@@ -166,12 +154,13 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
         date='July 2024'
         href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
       />
-    </Section>
+    </Section>-->
 
     <Section title='Skills'>
       <SkillLayout title='Languages' skills={languages} />
       <SkillLayout title='Frontend' skills={frontend} />
       <SkillLayout title='Backend' skills={backend} />
+      <SkillLayout title='Service' skills={service} />
     </Section>
   </div>
 
