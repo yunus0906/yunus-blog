@@ -1,6 +1,6 @@
 ---
 title: JeeSite 框架使用汇总
-publishDate: 2024-11-27 08:00:00
+publishDate: 2024-11-27 11:02:00
 description: '在使用JeeSite中遇到的问题或者灵活的使用方法在这里记录，实时更新。'
 tags:
   - JeeSite
@@ -9,6 +9,57 @@ tags:
 heroImage: { src: './thumbnail.jpg', color: '#B4C6DA' }
 language: '中文'
 ---
+
+## 自定义 Select 组件
+
+``` html
+<div class="form-group">
+    <label class="control-label">${text('小区')}：</label>
+    <div class="control-inline">
+        <#form:treeselect id="community" title="小区选择"
+        path="heatUser.communityId"
+        labelPath="heatUser.communityName"
+        url="${ctx}/basic/community/treeData"
+        callbackFuncName="callbackFuncFindBuildingName"
+        class="" allowClear="true"/>
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label">${text('楼栋')}：</label>
+    <div class="control-inline width-90">
+        <select id="heatUser_buildingName" name="heatUser.buildingName" class="form-control">
+            <option value="">&nbsp;</option>
+        </select>
+    </div>
+</div>
+```
+
+``` javascript
+$('#heatUser_buildingName').on('select2:select', function (e) {
+	callbackFuncFindUnitName();
+	$('#HouseNumberList').val('').trigger("change");
+});
+
+function callbackFuncFindBuildingName() {
+	if (!$('#communityCode').val()){
+		$('#heatUser_buildingName').html('<option value="">&nbsp;</option>');
+		return;
+	}
+	js.ajaxSubmit('${ctx}/basic/heatUser/findBuildingName', {
+		communityId: $('#communityCode').val()
+	}, function(data){
+		$('#heatUser_buildingName').html('<option value="">&nbsp;</option>');
+		if (data.length === 0) {
+			return;
+		}
+		data.forEach(function(item) {
+			$('#heatUser_buildingName').append('<option value="'+item+'">'+item+'</option>')
+		})
+		callbackFuncFindUnitName();
+	})
+}
+```
+
 
 ## 重写列表查询点击事件
 ``` javascript
