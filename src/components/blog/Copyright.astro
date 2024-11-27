@@ -59,13 +59,13 @@ const {
   </div>
 
   <!-- functions -->
+  <!--{ id: 'share-weibo', icon: 'mingcute-weibo-line' }-->
   <div class='relative'>
     <div class='flex flex-row gap-3'>
       {
         [
           { id: 'copy-link', icon: 'mingcute-link-2-line' },
           { id: 'get-qrcode', icon: 'mingcute-qrcode-2-line' },
-          { id: 'share-weibo', icon: 'mingcute-weibo-line' }
         ].map(({ id, icon }) => (
           <button
             id={id}
@@ -87,7 +87,7 @@ const {
   </div>
 </div>
 
-<div class='mx-6 rounded-b-xl border border-t-0 px-3 pb-1.5 pt-1 sm:mx-8 sm:px-4'>
+<!--<div class='mx-6 rounded-b-xl border border-t-0 px-3 pb-1.5 pt-1 sm:mx-8 sm:px-4'>
   <a
     href='/projects#sponsorship'
     class='flex justify-between text-muted-foreground no-underline'
@@ -98,7 +98,7 @@ const {
       <use href='/icons/copyright-sponsor.svg#mingcute-receive-money-line'></use>
     </svg>
   </a>
-</div>
+</div>-->
 
 <script is:inline type='module'>
   import QRCode from '/scripts/qrcode.js'
