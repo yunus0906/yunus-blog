@@ -1,6 +1,6 @@
 ---
 title: 本地运行 BroadcastChannel 和常见问题
-publishDate: 2024-12-04 11:30:00
+publishDate: 2024-12-04 23:30:00
 description: 'ccbikai/BroadcastChannel'
 tags:
   - vercel
