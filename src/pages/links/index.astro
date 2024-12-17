@@ -1,13 +1,11 @@
 ---
-import Collapse from '@/components/Collapse.astro'
-// import Timeline from '@/components/Timeline.astro'
-import FriendList from '@/components/links/FriendList.astro'
 import PageLayout from '@/layouts/CommonPage.astro'
-import Comment from '@/components/Comment.astro'
-import { siteConfig } from '@/site-config'
-
 import links from 'public/links.json'
-import '@/assets/styles/links.css'
+
+import { Comment } from '@/components/advanced'
+import FriendList from '@/components/links/FriendList.astro'
+import { Collapse, Timeline } from '@/components/user'
+import { integrationConfig } from '@/site-config'
 
 const headings = [
   {
@@ -32,44 +30,30 @@ const headings = [
   }
 ]
 
-/**
- {
- "name": "Arthals' ink",
- "intro": "所见高山远木，阔云流风；所幸岁月盈余，了无拘束",
- "link": "https://arthals.ink/",
- "avatar": "https://cdn.arthals.ink/Arthals.png"
- },
- */
-
-const friendlist = links.friends
+const { friends } = links
+const linksConfig = integrationConfig.links
 ---
 
-<PageLayout title='Links' headings={headings} info='/links'>
+<PageLayout title='Links' {headings} info='/links'>
   <p>随机排序。</p>
   <h2 id='common-links'>Common Links</h2>
-  <FriendList list={friendlist[0]} />
+  <FriendList list={friends[0]} />
   <Collapse title='Links with Bad Status'>
-    <FriendList list={friendlist[1]} />
+    <FriendList list={friends[1]} />
   </Collapse>
   <!--<Collapse title='Link History Book'>
-    <Timeline
-      events={[
-        { date: '2024-07-01', content: 'Lorem ipsum dolor sit amet.' },
-        { date: '2024-07-01', content: 'vidit suscipit at mei.' },
-        { date: '2024-07-01', content: 'Quem denique mea id.' },
-      ]}
-    />
+    <Timeline events={linksConfig.logbook} />
   </Collapse>-->
-  <FriendList list={friendlist[2]} title='Special Links' />
+  <FriendList list={friends[2]} title='Special Links' />
 
   <!-- apply-links -->
   <h2 id='apply-links'>Apply Links</h2>
   <p>本站信息如下：</p>
-  <blockquote class='not-prose border-s-4 ps-4'>
-    <p>名称：<code>{siteConfig.applyFriendTip.name}</code></p>
-    <p>简介：<code>{siteConfig.applyFriendTip.slogan}</code></p>
-    <p>链接：<code>{siteConfig.applyFriendTip.url}</code></p>
-    <p>图标：<code>{siteConfig.applyFriendTip.avatar}</code></p>
+  <blockquote class='not-prose break-words border-s-4 ps-4'>
+    <p>名称：<code>{linksConfig.applyTip.name}</code></p>
+    <p>简介：<code>{linksConfig.applyTip.desc}</code></p>
+    <p>链接：<code>{linksConfig.applyTip.url}</code></p>
+    <p>图标：<code>{linksConfig.applyTip.avatar}</code></p>
   </blockquote>
 
   <p>

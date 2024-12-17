@@ -1,12 +1,10 @@
 ---
-// import Collapse from '@/components/Collapse.astro'
-import Timeline from '@/components/Timeline.astro'
 import PageLayout from '@/layouts/CommonPage.astro'
-import Comment from '@/components/Comment.astro'
-import ToolSection from '@/components/about/ToolSection.astro'
-import Button from '@/components/Button.astro'
+
 import Substats from '@/components/about/Substats.astro'
-// import Spoiler from '@/components/Spoiler.astro'
+import ToolSection from '@/components/about/ToolSection.astro'
+import { Comment } from '@/components/advanced'
+import { Button, Collapse, Spoiler, Timeline } from '@/components/user'
 
 const headings = [
   // {
@@ -37,14 +35,13 @@ const headings = [
 ]
 ---
 
-<PageLayout title='About' headings={headings} info='/about'>
-    <p>Web开发 / 赛博农民</p>
-    <p>
-    这里是敖烈，一个在互联网上分享和探索的程序员。
-    </p>
-    <p>居住在烟台，坐落于山东半岛东北部的沿海城市。</p>
+<PageLayout title='About' {headings} info='/about'>
+  <p>Web开发 / 赛博农民</p>
+  <p>这里是敖烈，一个在互联网上分享和探索的程序员。</p>
+  <p>居住在烟台，坐落于山东半岛东北部的沿海城市。</p>
   <Button title='Sponsor Me' class='w-fit' href='/projects#sponsorship' style='ahead' />
-  <!-- general-talk -->
+
+  {/* general-talk */}
   <!--<h2 id='hobbies'>Hobbies</h2>
   <ul>
     <li>Lorem ipsum dolor sit amet, vidit suscipit at mei.</li>
@@ -56,9 +53,9 @@ const headings = [
     <li>Impetus fuisset ullamcorper pri cu, his posse iisque ad, aliquam honestatis usu id.</li>
   </ul>-->
 
-  <!-- tools -->
+  {/* tools */}
   <h2 id='tools'>Tools</h2>
-  <p>我常用的工具:</p>
+  <p>我常用的工具。</p>
   <ToolSection
     class='mb-5'
     title='Design'
@@ -261,22 +258,44 @@ const headings = [
       }
     ]}
   />-->
-  <!-- social-networks -->
+
+  {/* social-networks */}
   <h2 id='social-networks'>Social Networks</h2>
   <p>
     在这里可以找到找到我的社交网络。
   </p>
-  <Substats />
+  <Substats
+    stats={[
+        {
+            platform: 'GitHub',
+            icon: 'social.svg#mingcute-github-line',
+            link: 'https://github.com/yunus0906',
+            text: 'followers',
+            api: 'github/yunus0906',
+            count: 0
+        },
+        {
+            platform: 'Telegram',
+            icon: 'social.svg#mingcute-telegram-line',
+            color: '#2ca5e0',
+            link: 'https://t.me/kfcvivo50cc',
+            text: 'subscribers',
+            api: 'telegram/kfcvivo50cc'
+        },
+    ]}
+  />
 
-  <!-- gossips -->
+  {/* gossips */}
   <!--<h2 id='gossips'>Gossips</h2>
   <Collapse title='Lorem ipsum'>
     Lorem ipsum dolor sit amet, vidit suscipit at mei. Quem denique mea id. Usu ei regione indoctum
     dissentiunt, cu meliore fuisset mei, vel quod voluptua ne. Ex dicat impedit mel, at eum oratio
     possit voluptatum.
   </Collapse>-->
-  <!-- about-blog -->
+
+  {/* about-blog */}
   <h2 id='about-blog'>About Blog</h2>
+  <p>Website history:</p>
   <Timeline
     events={[
     {
@@ -303,30 +322,31 @@ const headings = [
   <p>
     记录生活，分享技术，分享生活。
   </p>
-    <!--<ul>
-      <li>
-        Framework & Theme: <a href='https://astro.build/' target='_blank'>Astro</a> + <a
-          href='https://github.com/cworld1/astro-theme-pure'
-          target='_blank'>Astro Theme Pure</a
-        >
-      </li>
-      <li>
-        Site hosting: <a href='https://vercel.com/' target='_blank'>Vercel</a>
-      </li>
-      <li>
-        CI/CD: <a href='https://vercel.com/workflow' target='_blank'>Vercel Workflow</a>
-      </li>
-      &lt;!&ndash; <li>Resources speedup: <a href='https://cdn.cbd.int/' target='_blank'>CBD CDN</a></li> &ndash;&gt;
-      <li>Comment system: <a href='https://waline.js.org' target='_blank'>Waline</a></li>
-      <li>
-        Visits: <a href='https://supabase.com/' target='_blank'>Supabase</a> +
-        <a href='https://waline.js.org/' target='_blank'>Waline</a>
-      </li>
-      <li>
-        Other statistics: <a href='https://github.com/spencerwooo/substats' target='_blank'
-          >Substats</a
-        >
-      </li>
-    </ul>-->
+  <ul>
+    <li>Domain: <a href='#' target='_blank'>Vercel</a></li>
+    <li>
+      Framework & Theme: <a href='https://astro.build/' target='_blank'>Astro</a> + <a
+        href='https://github.com/cworld1/astro-theme-pure'
+        target='_blank'>Astro Theme Pure</a
+      >
+    </li>
+    <li>
+      Site hosting: <a href='https://vercel.com/' target='_blank'>Vercel</a>
+    </li>
+    <li>
+      CI/CD: <a href='https://vercel.com/workflow' target='_blank'>Vercel Workflow</a>
+    </li>
+    <!-- <li>Resources speedup: <a href='https://cdn.cbd.int/' target='_blank'>CBD CDN</a></li> -->
+    <li>Comment system: <a href='https://waline.js.org' target='_blank'>Waline</a></li>
+    <li>
+      Visits: <a href='https://supabase.com/' target='_blank'>Supabase</a> +
+      <a href='https://waline.js.org/' target='_blank'>Waline</a>
+    </li>
+    <li>
+      Other statistics: <a href='https://github.com/spencerwooo/substats' target='_blank'
+        >Substats</a
+      >
+    </li>
+  </ul>
   <Comment slot='bottom' />
 </PageLayout>

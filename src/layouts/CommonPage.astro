@@ -1,11 +1,13 @@
 ---
 import type { MarkdownHeading } from 'astro'
-
 import PageLayout from '@/layouts/BaseLayout.astro'
-import TOC from '@/components/pages/TOC.astro'
-import PageInfo from '@/components/pages/PageInfo.astro'
-import Button from '@/components/Button.astro'
+
 import BackToTop from '@/components/pages/BackToTop.astro'
+import PageInfo from '@/components/pages/PageInfo.astro'
+import TOC from '@/components/pages/TOC.astro'
+import { Button } from '@/components/user'
+import { cn } from '@/utils'
+import { integrationConfig } from '@/site-config'
 
 interface Props {
   title: string
@@ -29,12 +31,12 @@ const { title, headings, info, ...props } = Astro.props
         !!headings?.length && (
           <TOC
             class='animate top-24 z-10 min-w-40 basis-60 max-md:hidden md:sticky md:order-2'
-            headings={headings}
+            {headings}
           />
         )
       }
       <article class='flex-1'>
-        <div id='hero'>
+        <div id='content-header'>
           <h1 class='text-2xl font-medium sm:mb-2 sm:text-3xl'>
             {title}
           </h1>
@@ -52,7 +54,7 @@ const { title, headings, info, ...props } = Astro.props
         </div>
         <div
           id='content'
-          class='prose prose-base prose-zinc mt-8 max-w-none text-muted-foreground dark:prose-invert prose-headings:font-medium prose-headings:text-foreground md:min-w-[45ch]'
+          class={cn('mt-8 max-w-none md:min-w-[45ch]', integrationConfig.typography.class)}
         >
           <slot />
         </div>
@@ -66,6 +68,6 @@ const { title, headings, info, ...props } = Astro.props
         <slot name='bottom-sidebar' />
       </div>
     </div>
-    <BackToTop header='hero' content='content' />
+    <BackToTop header='content-header' content='content' />
   </div>
 </PageLayout>

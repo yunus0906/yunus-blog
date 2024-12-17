@@ -1,26 +1,37 @@
-import { defineConfig } from 'astro/config'
+// @ts-check
 
-// Adapter
-// if you want deploy on vercel
-import vercel from '@astrojs/vercel/serverless'
-// if you want deploy locally
-// import node from '@astrojs/node'
-// ---
-
-// Integrations
+import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import tailwind from '@astrojs/tailwind'
+// Adapter
+import vercelServerless from '@astrojs/vercel/serverless'
+// Integrations
 import icon from 'astro-icon'
-// Markdown
+import { defineConfig } from 'astro/config'
+// Rehype & remark packages
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeKatex from 'rehype-katex'
-import { remarkAlert } from 'remark-github-blockquote-alert'
 import remarkMath from 'remark-math'
-import { siteConfig } from './src/site.config.ts'
-import { addCopyButton, addTitle, addLanguage, updateStyle } from './src/utils/shiki.ts'
-import { remarkGithubCards, remarkReadingTime, remarkArxivCards } from './src/utils/remarkParser.ts'
 
+// Local rehype & remark plugins
+import rehypeAutolinkHeadings from './src/plugins/rehypeAutolinkHeadings.ts'
+// Markdown
+import {
+  remarkAddZoomable,
+  remarkArxivCards,
+  remarkReadingTime
+} from './src/plugins/remarkPlugins.ts'
+// Shiki
+import {
+  addCopyButton,
+  addLanguage,
+  addTitle,
+  transformerNotationDiff,
+  transformerNotationHighlight,
+  updateStyle
+} from './src/plugins/shikiTransformers.ts'
+import { integrationConfig, siteConfig } from './src/site.config.ts'
 
 // https://astro.build/config
 export default defineConfig({
@@ -31,21 +42,18 @@ export default defineConfig({
   output: 'server',
 
   // Adapter
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true
-    }
-  }),
-  // if you want deploy locally
-  // adapter: node({
-  //   mode: 'standalone'
-  // }),
+  // 1. Vercel (serverless)
+  adapter: vercelServerless(),
+  // 2. Vercel (static)
+  // adapter: vercelStatic(),
+  // 3. Local (standalone)
+  // adapter: node({ mode: 'standalone' }),
   // ---
 
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp'
-    },
+    }
   },
 
   integrations: [
@@ -69,31 +77,48 @@ export default defineConfig({
   // Markdown Options
   markdown: {
     remarkPlugins: [
-      remarkMath,
       remarkReadingTime,
-      remarkAlert,
-      remarkGithubCards,
-      remarkArxivCards
+      remarkMath,
+      remarkArxivCards,
+      // @ts-ignore
+      ...(integrationConfig.mediumZoom.enable
+        ? [[remarkAddZoomable, integrationConfig.mediumZoom.options]] // Wrap in array to ensure it's iterable
+        : [])
     ],
     rehypePlugins: [
       [rehypeKatex, {}],
       [
         rehypeExternalLinks,
         {
-          ...(siteConfig.externalLinkArrow && { content: { type: 'text', value: ' ↗' } }),
+          ...(siteConfig.content.externalLinkArrow && { content: { type: 'text', value: ' ↗' } }),
           target: '_blank',
           rel: ['nofollow, noopener, noreferrer']
         }
+      ],
+      rehypeHeadingIds,
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: 'append',
+          properties: { className: ['anchor'] },
+          content: { type: 'text', value: '#' }
+        }
       ]
     ],
-    // remarkRehype: { },
     // https://docs.astro.build/en/guides/syntax-highlighting/
     shikiConfig: {
       themes: {
         light: 'github-light',
         dark: 'github-dark'
       },
-      transformers: [updateStyle(), addTitle(), addLanguage(), addCopyButton(2000)]
+      transformers: [
+        transformerNotationDiff(),
+        transformerNotationHighlight(),
+        updateStyle(),
+        addTitle(),
+        addLanguage(),
+        addCopyButton(2000)
+      ]
     }
   }
 })

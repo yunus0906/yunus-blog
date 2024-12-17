@@ -1,15 +1,15 @@
 ---
-export const prerender = true
-
 import type { GetStaticPaths, Page } from 'astro'
+import PageLayout from '@/layouts/BaseLayout.astro'
 import type { CollectionEntry } from 'astro:content'
 
-import { siteConfig } from '@/site-config'
-import Button from '@/components/Button.astro'
 import Pagination from '@/components/blog/Paginator.astro'
 import PostPreview from '@/components/blog/PostPreview.astro'
-import PageLayout from '@/layouts/BaseLayout.astro'
+import { Button } from '@/components/user'
 import { getAllCollections, getUniqueTags, sortMDByDate } from '@/utils'
+import { siteConfig } from '@/site-config'
+
+export const prerender = true
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = await getAllCollections()
@@ -17,7 +17,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   const uniqueTags = getUniqueTags(allPosts)
   const totalPosts = allPosts.length
   return paginate(allPostsByDate, {
-    pageSize: siteConfig.pageSize,
+    pageSize: siteConfig.blog.pageSize,
     props: { uniqueTags, totalPosts }
   })
 }) satisfies GetStaticPaths
@@ -51,7 +51,7 @@ const paginationProps = {
 }
 ---
 
-<PageLayout meta={meta}>
+<PageLayout {meta}>
   <div class='w-full'>
     <Button title='Back' href='/' style='back' />
     <h1 class='mb-6 mt-6 text-3xl font-medium sm:mt-10'>Blog</h1>
@@ -67,8 +67,8 @@ const paginationProps = {
                 <span class='text-muted-foreground'>
                   Page {page.currentPage} - Showing {page.data.length} of {totalPosts} posts
                 </span>
-                <a aria-label='View all blog by years' href='/years' data-astro-prefetch>
-                  View posts by years →
+                <a aria-label='View all blog by years' href='/archives' data-astro-prefetch>
+                  View all posts by years →
                 </a>
               </div>
               <ul class='animate flex flex-col gap-y-4 text-start'>
@@ -79,7 +79,7 @@ const paginationProps = {
               <Pagination {...paginationProps} />
             </section>
             {!!uniqueTags.length && (
-              <aside class='animate'>
+              <aside class='animate' id='sidebar'>
                 <h2 class='mb-4 flex items-center text-lg font-semibold'>
                   <svg class='me-2 size-6'>
                     <use href='/icons/ui.svg#mingcute-tag-2-line' />

@@ -2,20 +2,22 @@
 
 一个由 Astro 构建的轻便、简洁但功能丰富的博客主题。
 
-主题使用：https://github.com/cworld1/astro-theme-pure
-
-感谢作者：[cworld1](https://github.com/cworld1)
+![image](https://github.com/user-attachments/assets/7eb17ddf-fd5f-42f3-a337-675a21ba7a27)
 
 ## 简介 / 部署
 
-欲了解更多信息，请访问 [CWorld 网站](https://cworld0.com/blog/theme-resume) 和 [部署说明](https://astro-theme-pure.vercel.app/blog/customize-zh)。
+查看 [预览 →](https://astro-theme-pure.vercel.app/)
+
+## 使用
+
+[文档](https://astro-theme-pure.vercel.app/docs/list) | [展示台](https://github.com/cworld1/astro-theme-pure/issues/10)
 
 ## 本地开发
 
 环境要求：
 
 - [Nodejs](https://nodejs.org/): 18.0.0+
-- [yarn](https://classic.yarnpkg.com/): 1.0.0+
+- [Bun](https://bun.sh/): 1.0.0+
 
 克隆存储库：
 
@@ -44,11 +46,23 @@ yarn dev
 yarn run build
 ```
 
+预览：
+
+```shell
+yarn preview
+```
+
+## 贡献
+
+为了花更多时间编写代码，减少在空白上纠结的时间，本项目使用代码约定和样式来鼓励一致性。风格一致的代码更容易（且更不容易出错）进行审查、维护和理解。
+
 ## 感谢
-- [Astro Theme Pure](https://github.com/cworld1/astro-theme-pure)
+
 - [Astro Cactus](https://github.com/chrismwilliams/astro-theme-cactus)
 - [Astro Resume](https://github.com/srleom/astro-theme-resume)
 
 ## 许可证
 
 本项目基于 Apache 2.0 许可证。
+
+[![Star History Chart](https://api.star-history.com/svg?repos=cworld1/astro-theme-pure&type=Date)](https://star-history.com/#cworld1/astro-theme-pure&Date)

@@ -1,5 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content'
+
+import { QRCode } from '@/components/advanced'
 import { cn, getFormattedDate } from '@/utils'
 import { siteConfig } from '@/site-config'
 
@@ -12,6 +14,26 @@ const {
   content: { slug, data },
   class: className
 } = Astro.props
+
+const link = `${import.meta.env.SITE}/blog/${slug}`
+
+const image =
+  typeof data.heroImage?.src === 'string' ? data.heroImage?.src : (data.heroImage?.src?.src ?? '')
+
+const shares = {
+  weibo: {
+    icon: 'mingcute-weibo-line',
+    link: `http://service.weibo.com/share/share.php?url=${encodeURIComponent(link)}&title=${data.title}&pic=${image}`
+  },
+  x: {
+    icon: 'mingcute-social-x-line',
+    link: `https://x.com/intent/tweet?text='${data.title}'&url='${encodeURIComponent(link)}'&via='${siteConfig.author}'`
+  },
+  bluesky: {
+    icon: 'mingcute-bluesky-social-line',
+    link: `https://bsky.app/intent/compose?text=${data.title}%0A${encodeURIComponent(link)}`
+  }
+}
 ---
 
 <div
@@ -24,13 +46,13 @@ const {
     <use href='/icons/copyright-sponsor.svg#mingcute-copyright-line'></use>
   </svg>
 
-  <!-- title & link -->
+  {/* title & link */}
   <div class='flex flex-col'>
-    <div class='text-foreground'>{data.title}</div>
+    <div class='font-medium text-foreground'>{data.title}</div>
     <div class='text-sm'>{import.meta.env.SITE}/blog/{slug}</div>
   </div>
 
-  <!-- common info -->
+  {/* common info */}
   <div class='flex flex-row flex-wrap justify-start gap-x-5 gap-y-1 sm:gap-x-8'>
     <div class='flex gap-x-2 sm:flex-col'>
       <span>Author</span>
@@ -58,36 +80,45 @@ const {
     </div>
   </div>
 
-  <!-- functions -->
-  <!--{ id: 'share-weibo', icon: 'mingcute-weibo-line' }-->
+  {/* functions */}
   <div class='relative'>
     <div class='flex flex-row gap-3'>
+      <button
+        id='copy-link'
+        class='group rounded-full bg-muted p-1 text-muted-foreground transition-colors hover:text-primary sm:p-1.5'
+      >
+        <svg class='size-5'>
+          <use href='/icons/copyright-sponsor.svg#mingcute-link-2-line'></use>
+        </svg>
+      </button>
+      <button
+        id='get-qrcode'
+        class='group rounded-full bg-muted p-1 text-muted-foreground transition-colors hover:text-primary sm:p-1.5'
+      >
+        <svg class='size-5'>
+          <use href='/icons/copyright-sponsor.svg#mingcute-qrcode-2-line'></use>
+        </svg>
+      </button>
       {
-        [
-          { id: 'copy-link', icon: 'mingcute-link-2-line' },
-          { id: 'get-qrcode', icon: 'mingcute-qrcode-2-line' },
-        ].map(({ id, icon }) => (
-          <button
-            id={id}
-            class='group rounded-full bg-primary-foreground p-1 text-muted-foreground transition-colors hover:text-primary sm:p-1.5'
-          >
-            <svg class='size-5'>
-              <use href={`/icons/copyright-sponsor.svg#${icon}`} />
-            </svg>
-          </button>
+        siteConfig.content.share.map((share) => (
+          <a href={shares[share].link} target='_blank'>
+            <button
+              id={`share-${share}`}
+              class='group rounded-full bg-muted p-1 text-muted-foreground transition-colors hover:text-primary sm:p-1.5'
+            >
+              <svg class='size-5'>
+                <use href={`/icons/copyright-sponsor.svg#${shares[share].icon}`} />
+              </svg>
+            </button>
+          </a>
         ))
       }
     </div>
-    <div
-      id='qrcode'
-      aria-expanded='false'
-      class='absolute z-10 -mt-2 box-content max-h-0 overflow-hidden rounded-xl border bg-primary-foreground p-4 opacity-0 transition-all duration-300 ease-in-out *:my-0 aria-expanded:max-h-[256px] aria-expanded:translate-y-4 aria-expanded:opacity-100'
-    >
-    </div>
+    <QRCode />
   </div>
 </div>
 
-<!--<div class='mx-6 rounded-b-xl border border-t-0 px-3 pb-1.5 pt-1 sm:mx-8 sm:px-4'>
+<div class='mx-6 rounded-b-xl border border-t-0 px-3 pb-1.5 pt-1 sm:mx-8 sm:px-4'>
   <a
     href='/projects#sponsorship'
     class='flex justify-between text-muted-foreground no-underline'
@@ -98,40 +129,16 @@ const {
       <use href='/icons/copyright-sponsor.svg#mingcute-receive-money-line'></use>
     </svg>
   </a>
-</div>-->
+</div>
 
-<script is:inline type='module'>
-  import QRCode from '/scripts/qrcode.js'
-  const link = window.location.href
+<script>
+  import { showToast } from '@/utils'
 
-  // copy link
+  // Copy link
   const copyLink = document.getElementById('copy-link')
   copyLink?.addEventListener('click', () => {
-    navigator.clipboard.writeText(link)
-  })
-
-  // get qrcode
-  function loadqrcode(qrcodeContainer) {
-    if (!qrcodeContainer) throw new Error('qrcode container not found')
-    if (qrcodeContainer.innerHTML !== '') return
-    new QRCode(qrcodeContainer, link)
-  }
-  const getQRCode = document.getElementById('get-qrcode')
-  const qrcodeContainer = document.getElementById('qrcode')
-  if (!qrcodeContainer) throw new Error('qrcode container not found')
-  getQRCode?.addEventListener('click', () => {
-    if (qrcodeContainer.ariaExpanded === 'true') {
-      qrcodeContainer.ariaExpanded = 'false'
-    } else {
-      loadqrcode(qrcodeContainer)
-      qrcodeContainer.ariaExpanded = 'true'
-    }
-  })
-
-  // share weibo
-  const shareWeibo = document.getElementById('share-weibo')
-  shareWeibo?.addEventListener('click', () => {
-    const shareUrl = `http://service.weibo.com/share/share.php?url=${link}&title=${document.title}&pic=https://cravatar.cn/avatar/1ffe42aa45a6b1444a786b1f32dfa8aa?s=400`
-    window.open(shareUrl, '_blank')
+    navigator.clipboard.writeText(window.location.href)
+    // Show toast
+    showToast({ message: 'Link copied!' })
   })
 </script>

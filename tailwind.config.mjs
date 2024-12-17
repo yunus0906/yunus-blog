@@ -1,36 +1,45 @@
+import typography from '@tailwindcss/typography'
 import { fontFamily } from 'tailwindcss/defaultTheme'
 
-const typographyConfig = {
-  DEFAULT: {
+const fg = 'hsl(var(--foreground) / var(--tw-text-opacity, 1))'
+const fgMuted = 'hsl(var(--muted-foreground) / var(--tw-text-opacity, 1))'
+const bgMuted = 'hsl(var(--muted) / var(--tw-bg-opacity, 1))'
+
+const typographyConfig = ({ theme }) => ({
+  pure: {
     css: {
-      h2: {
-        '&:target::before': {
-          display: 'inline-block',
-          content: '"#"',
-          marginInlineStart: '-30px',
-          width: '30px'
-        }
-      },
-      h3: {
-        '&:target::before': {
-          display: 'inline-block',
-          content: '"#"',
-          marginInlineStart: '-30px',
-          width: '30px'
+      '--tw-prose-headings': fg,
+      '--tw-prose-body': fgMuted,
+      '--tw-prose-links': fg,
+      '--tw-prose-quotes': fgMuted,
+      '--tw-prose-code:': fg,
+      '--tw-prose-pre-code': fgMuted,
+      '--tw-prose-pre-bg': bgMuted,
+
+      'h2, h3, h4, h5, h6, h7': {
+        '& > a': {
+          marginInlineStart: '0.75rem',
+          color: fgMuted,
+          transition: 'opacity 0.2s ease',
+          opacity: '0'
+        },
+        '&:hover > a, &:target > a': {
+          opacity: '1'
         }
       },
       img: {
-        borderRadius: 'var(--radius)',
+        borderRadius: theme('borderRadius.lg'),
         margin: '0 auto'
       },
       table: {
-        width: '100%'
+        display: 'block',
+        overflowX: 'scroll'
       },
       blockquote: {
         position: 'relative',
         overflow: 'hidden',
         borderWidth: '0.1rem',
-        borderRadius: 'var(--radius)',
+        borderRadius: theme('borderRadius.lg'),
         paddingInlineStart: '1.6rem !important',
         paddingInlineEnd: '1.6rem !important',
         '&::after': {
@@ -52,14 +61,14 @@ const typographyConfig = {
       }
     }
   }
-}
+})
 
 /** @type {import('tailwindcss').Config} */
 const config = {
-  darkMode: ['class'],
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  darkMode: ['class'],
   safelist: ['dark'],
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [typography()],
 
   theme: {
     container: {

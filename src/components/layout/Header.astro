@@ -1,9 +1,9 @@
 ---
-import { siteConfig, menuLinks } from '@/site-config'
+import { menuLinks, siteConfig } from '@/site-config'
 ---
 
 <header-component
-  class='group sticky top-4 z-30 mb-16 box-content w-full rounded-xl border border-transparent py-1 transition-all duration-300 sm:rounded-2xl [&.not-top]:border-border [&.not-top]:bg-background dark:[&.not-top]:bg-primary-foreground'
+  class='group sticky top-4 z-30 mb-16 box-content w-full rounded-xl border border-transparent py-1 transition-all duration-300 sm:rounded-2xl [&.not-top]:border-border [&.not-top]:bg-background dark:[&.not-top]:bg-muted'
 >
   <header class='flex flex-wrap text-sm sm:flex-nowrap sm:justify-start'>
     <nav
@@ -11,7 +11,7 @@ import { siteConfig, menuLinks } from '@/site-config'
       aria-label='global'
     >
       <div
-        class='absolute -left-4 -top-8 -z-10 box-content hidden h-20 w-[calc(100%+2rem)] !duration-0 max-sm:group-[.expanded]:block max-sm:group-[.expanded.not-top]:hidden max-sm:group-[.expanded]:bg-white dark:max-sm:group-[.expanded]:bg-primary-foreground'
+        class='absolute -left-4 -top-8 -z-10 box-content hidden h-20 w-[calc(100%+2rem)] !duration-0 max-sm:group-[.expanded]:block max-sm:group-[.expanded.not-top]:hidden max-sm:group-[.expanded]:bg-white dark:max-sm:group-[.expanded]:bg-muted'
       >
       </div>
       <a
@@ -24,10 +24,10 @@ import { siteConfig, menuLinks } from '@/site-config'
       <div class='flex gap-x-4 sm:gap-x-6'>
         <div
           id='headerExpandConetent'
-          class='end-0 start-0 top-12 z-20 grid transition-all duration-300 group-[.not-top]:rounded-xl group-[.expanded]:opacity-100 dark:group-[.expanded.not-top]:bg-primary-foreground max-md:border-b max-sm:absolute max-sm:pb-4 max-sm:pt-0 max-sm:opacity-0 max-sm:group-[.not-top]:border max-sm:group-[.expanded]:bg-background max-sm:group-[.not-top]:px-4 max-sm:group-[.not-top]:pb-2 max-sm:group-[.not-top]:pt-2 sm:grid-rows-1 sm:border-0'
+          class='end-0 start-0 top-12 z-20 grid transition-all duration-300 group-[.not-top]:rounded-xl group-[.expanded]:opacity-100 dark:group-[.expanded.not-top]:bg-muted max-md:border-b max-sm:absolute max-sm:pb-4 max-sm:pt-0 max-sm:opacity-0 max-sm:group-[.not-top]:border max-sm:group-[.expanded]:bg-background max-sm:group-[.not-top]:px-4 max-sm:group-[.not-top]:pb-2 max-sm:group-[.not-top]:pt-2 sm:grid-rows-1 sm:border-0'
         >
           <div
-            class='absolute -left-4 top-0 -z-10 box-content hidden h-full w-[calc(100%+2rem)] bg-white max-md:border-b max-sm:group-[.expanded]:block max-sm:group-[.expanded.not-top]:hidden dark:max-sm:group-[.expanded]:bg-primary-foreground'
+            class='absolute -left-4 top-0 -z-10 box-content hidden h-full w-[calc(100%+2rem)] bg-white max-md:border-b max-sm:group-[.expanded]:block max-sm:group-[.expanded.not-top]:hidden dark:max-sm:group-[.expanded]:bg-muted'
           >
           </div>
           <div
@@ -67,19 +67,22 @@ import { siteConfig, menuLinks } from '@/site-config'
         <div class='flex gap-x-4 transition-all group-[.not-top]:me-1.5 group-[.not-top]:gap-x-2'>
           <button
             id='toggleDarkMode'
-            class='group/dark rounded-md border p-1.5 transition-all hover:bg-border sm:group-[.not-top]:rounded-xl'
+            class='group/dark box-content size-5 rounded-md border p-1.5 transition-colors hover:bg-border sm:group-[.not-top]:rounded-xl'
           >
             <span class='sr-only'>Dark Theme</span>
-            <svg class='size-5 transition-all group-hover/dark:text-primary dark:hidden'>
+            <svg class='system size-5 transition-colors group-hover/dark:text-primary'>
+              <use href='/icons/header.svg#ph-desktop'></use>
+            </svg>
+            <svg class='light hidden size-5 transition-colors group-hover/dark:text-primary'>
               <use href='/icons/header.svg#mingcute-sun-line'></use>
             </svg>
-            <svg class='hidden size-5 transition-all group-hover/dark:text-primary dark:block'>
+            <svg class='dark hidden size-5 transition-colors group-hover/dark:text-primary'>
               <use href='/icons/header.svg#mingcute-moon-stars-line'></use>
             </svg>
           </button>
           <button
             id='toggleMenu'
-            class='rounded-md border p-1.5 transition-all hover:bg-border sm:hidden sm:group-[.not-top]:rounded-xl'
+            class='rounded-md border p-1.5 transition-colors hover:bg-border sm:hidden sm:group-[.not-top]:rounded-xl'
           >
             <span class='sr-only'>Menu</span>
             <svg class='size-5'>
@@ -92,7 +95,16 @@ import { siteConfig, menuLinks } from '@/site-config'
   </header>
 </header-component>
 
+{/* Use inline to load icon quicker firstly */}
+<script is:inline>
+  const toggleDarkModeElement = document.getElementById('toggleDarkMode')
+  if (toggleDarkModeElement) {
+    toggleDarkModeElement.dataset.theme = localStorage.getItem('theme') || 'system'
+  }
+</script>
 <script>
+  import { setTheme, showToast } from '@/utils'
+
   class Header extends HTMLElement {
     constructor() {
       super()
@@ -102,7 +114,6 @@ import { siteConfig, menuLinks } from '@/site-config'
       // Header
       let preScrollY = window.scrollY
       this.classList.toggle('not-top', preScrollY > 20)
-
       window.addEventListener('scroll', () => {
         this.classList.toggle('not-top', window.scrollY > 20)
         this.dataset.show = (window.scrollY < 350 || window.scrollY < preScrollY).toString()
@@ -110,29 +121,29 @@ import { siteConfig, menuLinks } from '@/site-config'
       })
 
       // Dark Mode
-      function getCurrentTheme() {
-        return localStorage.getItem('theme')
-      }
-      const toggleDarkModeButton = this.querySelector('#toggleDarkMode')
-      toggleDarkModeButton?.addEventListener('click', () => {
-        const toggleDarkModeEvent = new CustomEvent('theme-change', {
-          detail: { theme: getCurrentTheme() === 'light' ? 'dark' : 'light' }
-        })
-        document.dispatchEvent(toggleDarkModeEvent)
+      const darkModeBtn = this.querySelector('#toggleDarkMode') as HTMLElement
+      darkModeBtn.addEventListener('click', () => {
+        // Old way: dispatch event
+        // const toggleDarkModeEvent = new CustomEvent('theme-change', {
+        //   detail: { theme: localStorage.getItem('theme') === 'light' ? 'dark' : 'light' }
+        // })
+        // document.dispatchEvent(toggleDarkModeEvent)
+        const newTheme = setTheme(undefined, true)
+        darkModeBtn.dataset.theme = newTheme
+        showToast({ message: `Set theme to ${newTheme}` })
       })
 
       // Menu
-      const toggleMenuButton = this.querySelector('#toggleMenu')
-      toggleMenuButton?.addEventListener('click', () => {
+      this.querySelector('#toggleMenu')?.addEventListener('click', () => {
         this.classList.toggle('expanded')
       })
     }
   }
+
   customElements.define('header-component', Header)
 </script>
 
 <style>
-  /* header-componnet */
   header-component.not-top {
     box-shadow:
       rgb(255, 255, 255) 0px 0px 0px 0px,
@@ -163,6 +174,26 @@ import { siteConfig, menuLinks } from '@/site-config'
         rgba(24, 24, 27, 0.08) 0px 0px 0px 1px,
         rgba(39, 39, 42, 0.08) 0px 10px 15px -3px,
         rgba(39, 39, 42, 0.08) 0px 4px 6px -4px;
+    }
+  }
+
+  /* dark light mode toggle */
+  #toggleDarkMode {
+    &[data-theme='dark'] {
+      & .system {
+        display: none;
+      }
+      & .dark {
+        display: block;
+      }
+    }
+    &[data-theme='light'] {
+      & .system {
+        display: none;
+      }
+      .light {
+        display: block;
+      }
     }
   }
 </style>

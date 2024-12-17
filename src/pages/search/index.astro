@@ -1,10 +1,11 @@
 ---
-export const prerender = true
-
-import Button from '@/components/Button.astro'
-import Search from '@/components/search/Search.astro'
 import PageLayout from '@/layouts/BaseLayout.astro'
+
+import Search from '@/components/search/Search.astro'
+import { Button } from '@/components/user'
 import { getAllCollections } from '@/utils'
+
+export const prerender = true
 
 const allPosts = await getAllCollections()
 
@@ -14,7 +15,7 @@ const meta = {
 }
 ---
 
-<PageLayout meta={meta}>
+<PageLayout {meta}>
   <div class='w-full'>
     <Button title='Back' href='/blog' style='back' />
     <h1 class='mb-6 mt-6 text-3xl font-medium sm:mt-10'>Search</h1>
