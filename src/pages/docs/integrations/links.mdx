@@ -1,18 +1,18 @@
 ---
-layout: '@/pages/docs/DocsLayout.astro'
+layout: '@/layouts/DocsLayout.astro'
 
 title: 'Friend Links'
 description: 'Configurations for friend links'
 ---
 
-import {Steps} from '@/components/user'
+import { Steps } from 'astro-pure/user'
 
 ## Basic Configurations
 
 A basic configuration for friend links is in `src/site.config.ts`. You can add your friend's logbook or your own link info.
 
 ```ts title="src/site.config.ts"
-export const integrationConfig: IntegrationConfig = {
+export const integ: IntegrationUserConfig = {
   links: {
     // Friend logbook
     logbook: [

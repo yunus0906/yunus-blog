@@ -1,43 +1,22 @@
 ---
-import PageLayout from '@/layouts/CommonPage.astro'
 import { Image } from 'astro:assets'
 
+import type { iconsType } from 'astro-pure/types'
+import { Button, Collapse, Icon } from 'astro-pure/user'
+import PageLayout from '@/layouts/CommonPage.astro'
 import ProjectSection from '@/components/projects/ProjectSection.astro'
 import Sponsors from '@/components/projects/Sponsors.astro'
-import { Button, Collapse } from '@/components/user'
+import KeyIcon from '@/assets/icons/key.svg'
 import wechat from '@/assets/wechat.png'
+import config from '@/site-config'
 
 const headings = [
-  {
-    depth: 2,
-    slug: 'programs',
-    text: 'Programs'
-  },
-  {
-    depth: 2,
-    slug: 'theme',
-    text: 'Theme'
-  },
-  {
-    depth: 2,
-    slug: 'learnings',
-    text: 'Learnings'
-  },
-  {
-    depth: 2,
-    slug: 'others',
-    text: 'Others'
-  },
-  // {
-  //   depth: 2,
-  //   slug: 'gpg-signature',
-  //   text: 'GPG Signature'
-  // },
-  {
-    depth: 2,
-    slug: 'contact',
-    text: 'ContactMe'
-  }
+  { depth: 2, slug: 'programs', text: 'Programs' },
+  { depth: 2, slug: 'theme', text: 'Theme' },
+  { depth: 2, slug: 'learnings', text: 'Learnings' },
+  { depth: 2, slug: 'others', text: 'Others' },
+  // { depth: 2, slug: 'gpg-signature', text: 'GPG Signature' },
+  { depth: 2, slug: 'contactMe', text: 'ContactMe' }
 ]
 ---
 
@@ -56,82 +35,80 @@ const headings = [
     support my work or contact me to discuss a project.
   </p>
   <Button title='Checkout sponsorship' class='w-fit' href='#sponsorship'>
-    <svg class='size-5' slot='before'>
-      <use href='/icons/copyright-sponsor.svg#mingcute-receive-money-line'></use>
-    </svg>
+    <Icon class='size-5' name='receive-money' slot='before' />
   </Button>-->
 
   <h2 id='programs'>Programs</h2>
   <ProjectSection
-    project={[
-      {
-        name: '📎 yunus的频道',
-        description: '整活，分享，学习',
-        links: [
-          { type: 'site', href: 'https://tg.kfcvivo50.cc' },
-          { type: 'github', href: 'https://github.com/yunus0906/tg-blog' },
-          { type: 'doc', href: 'https://github.com/ccbikai/BroadcastChannel' },
-        ]
-      },
-      {
-        name: '🤖 YunChat',
-        description: '自用ChatGPT',
-        links: [
-          { type: 'site', href: 'https://chat.kfcvivo50.cc' },
-        ]
-      },
-      {
-        name: '🔍 电子榨菜网',
-        description: '无限视频资源，尽在指尖，随时分享',
-        links: [
-          { type: 'site', href: 'https://search.kfcvivo50.cc/' },
-        ]
-      }
-    ]}
+      project={[
+        {
+          name: '📎 yunus的频道',
+          description: '整活，分享，学习',
+          links: [
+            { type: 'site', href: 'https://tg.kfcvivo50.cc' },
+            { type: 'github', href: 'https://github.com/yunus0906/tg-blog' },
+            { type: 'doc', href: 'https://github.com/ccbikai/BroadcastChannel' },
+          ]
+        },
+        {
+          name: '🤖 YunChat',
+          description: '自用ChatGPT',
+          links: [
+            { type: 'site', href: 'https://chat.kfcvivo50.cc' },
+          ]
+        },
+        {
+          name: '🔍 电子榨菜网',
+          description: '无限视频资源，尽在指尖，随时分享',
+          links: [
+            { type: 'site', href: 'https://search.kfcvivo50.cc/' },
+          ]
+        }
+      ]}
   />
   <Collapse title='Some old projects'>
     <ProjectSection
-      project={[
-        {
-          name: 'aole Wechat Bot',
-          description: '管理和配置WeChatGPT聊天机器人的后台管理系统',
-          links: [{ type: 'github', href: 'https://gitee.com/aol29/aole-bot-admin' }]
-        },
-        {
-          name: '微信聊天记录报告统计工具',
-          description: '一个DEMO！不是成品项目，仅供参考和学习',
-          links: [
-            { type: 'github', href: 'https://github.com/Aolcycle/wx-crecords' },
-            { type: 'doc', href: 'https://www.cnblogs.com/aoley/p/17676337.html'}
-          ]
-        },
-        {
-          name: '电商微信小程序模板',
-          description: '电商小程序包括前后端框架,适用于主流电商小程序开发',
-          links: [
-            { type: 'github', href: 'https://gitee.com/aol29/platform-mall-distribution' }
-          ]
-        }
-      ]}
+        project={[
+          {
+            name: 'aole Wechat Bot',
+            description: '管理和配置WeChatGPT聊天机器人的后台管理系统',
+            links: [{ type: 'github', href: 'https://gitee.com/aol29/aole-bot-admin' }]
+          },
+          {
+            name: '微信聊天记录报告统计工具',
+            description: '一个DEMO！不是成品项目，仅供参考和学习',
+            links: [
+              { type: 'github', href: 'https://github.com/Aolcycle/wx-crecords' },
+              { type: 'doc', href: 'https://www.cnblogs.com/aoley/p/17676337.html'}
+            ]
+          },
+          {
+            name: '电商微信小程序模板',
+            description: '电商小程序包括前后端框架,适用于主流电商小程序开发',
+            links: [
+              { type: 'github', href: 'https://gitee.com/aol29/platform-mall-distribution' }
+            ]
+          }
+        ]}
     />
   </Collapse>
 
-  <h2 id='theme'>Themes</h2>
+  <h2 id='theme'>Theme</h2>
   <ProjectSection
-      project={[
-        {
-          name: '🍭 Astro-theme-pure',
-          description: 'A simple, clean but powerful blog theme build by astro.',
-          links: [
-            { type: 'github', href: 'https://github.com/cworld1/astro-theme-pure' },
-            { type: 'site', href: 'https://github.com/cworld1/astro-theme-pure' },
-            {
-              type: 'doc',
-              href: 'https://github.com/cworld1/astro-theme-pure/blob/main/src/content/post/customize/index.md'
-            }
-          ]
-        }
-      ]}
+    project={[
+      {
+        name: '🍭 Astro-theme-pure',
+        description: 'A simple, clean but powerful blog theme build by astro.',
+        links: [
+          { type: 'github', href: 'https://github.com/cworld1/astro-theme-pure' },
+          { type: 'site', href: 'https://github.com/cworld1/astro-theme-pure' },
+          {
+            type: 'doc',
+            href: 'https://github.com/cworld1/astro-theme-pure/blob/main/src/content/blog/customize/index.md'
+          }
+        ]
+      }
+    ]}
   />
 
   <h2 id='learnings'>Learnings</h2>
@@ -179,24 +156,20 @@ const headings = [
     is <code>APTX4869</code>, and you can find it on the opengpg key servers or download from it.
   </p>
   <Button href='https://keys.openpgp.org/search?q=APTX4869' title='Checkout my key' target='_blank'>
-    <svg class='size-5' slot='before'>
-      <use href='/icons/project.svg#mingcute-key-2-line'></use>
-    </svg>
+    <KeyIcon class='size-5' slot='before' />
   </Button>-->
 
   <!-- sponsorship -->
-  <h2 id='contact'>ContactMe</h2>
+  <h2 id='contactMe'>ContactMe</h2>
   <p>门前常有客，四方皆是友。</p>
   <div class='flex flex-col justify-center gap-4 sm:flex-row'>
     {
       [
-        { name: 'WeChat', icon: 'mingcute-wechat-line', image: wechat },
+        { name: 'WeChat', icon: 'wechat-pay', image: wechat },
       ].map((item) => (
         <div class='group relative justify-center overflow-hidden rounded-xl border bg-white'>
           <div class='absolute bottom-0 end-0 start-0 top-0 flex items-center justify-center transition-opacity group-hover:opacity-0'>
-            <svg class='size-20'>
-              <use href={`/icons/copyright-sponsor.svg#${item.icon}`} />
-            </svg>
+            <Icon class='size-20' name={item.icon as iconsType} />
           </div>
           <Image
             class='mx-auto my-0 max-w-60 opacity-30 blur-sm transition-opacity group-hover:opacity-100 group-hover:blur-none'
@@ -219,16 +192,18 @@ const headings = [
   />-->
 </PageLayout>
 
-<script is:inline type='module' data-astro-rerun>
-  import { siteConfig } from '/src/site.config.ts'
-
+<script
+  is:inline
+  type='module'
+  data-astro-rerun
+  define:vars={{ npmCDN: config.npmCDN, walineServer: config.integ.waline.server }}
+>
   const loadPageviewCount = async () => {
-    const pageviewCount = await import(`${siteConfig.npmCDN}/@waline/client@v3/dist/pageview.js`)
-    pageviewCount({
-      serverURL: siteConfig.commonPage.walineServerUrl,
+    const pageview = await import(`${npmCDN}/@waline/client@v3/dist/pageview.js`)
+    pageview.pageviewCount({
+      serverURL: walineServer,
       path: window.location.pathname
     })
   }
-
-  loadPageviewCount()
+  await loadPageviewCount()
 </script>

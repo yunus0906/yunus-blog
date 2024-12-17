@@ -1,10 +1,9 @@
 ---
+import { Comment } from 'astro-pure/advanced'
+import { Button, Collapse, Spoiler, Timeline } from 'astro-pure/user'
 import PageLayout from '@/layouts/CommonPage.astro'
-
 import Substats from '@/components/about/Substats.astro'
 import ToolSection from '@/components/about/ToolSection.astro'
-import { Comment } from '@/components/advanced'
-import { Button, Collapse, Spoiler, Timeline } from '@/components/user'
 
 const headings = [
   // {
@@ -22,11 +21,11 @@ const headings = [
     slug: 'social-networks',
     text: 'Social Networks'
   },
-  /*{
-    depth: 2,
-    slug: 'gossips',
-    text: 'Gossips'
-  },*/
+  // {
+  //   depth: 2,
+  //   slug: 'gossips',
+  //   text: 'Gossips'
+  // },
   {
     depth: 2,
     slug: 'about-blog',
