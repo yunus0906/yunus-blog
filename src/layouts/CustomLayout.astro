@@ -1,0 +1,36 @@
+---
+import type { MarkdownHeading, MarkdownLayoutProps } from 'astro'
+
+import { MediumZoom } from 'astro-pure/advanced'
+import { CardList } from 'astro-pure/user'
+import IndividualPage from '@/layouts/IndividualPage.astro'
+import { docs } from '@/utils/docsContents'
+
+export const partial = true
+
+type Props = MarkdownLayoutProps<{
+  title: string
+  description: string
+  heroImage?: { src: string }
+  language?: string
+  back?: string
+}> & {
+  headings: MarkdownHeading[]
+}
+
+const { frontmatter, headings, file, url, rawContent, compiledContent } = Astro.props
+frontmatter.file = file
+frontmatter.back = '/docs/list'
+---
+
+<IndividualPage
+  frontmatter={frontmatter}
+  {headings}
+  file={file}
+  url={url}
+  rawContent={rawContent}
+  compiledContent={compiledContent}
+>
+  <slot />
+  <MediumZoom />
+</IndividualPage>
