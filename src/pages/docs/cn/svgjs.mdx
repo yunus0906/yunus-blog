@@ -5,21 +5,264 @@ title: 'SVG.js 中文文档'
 description: '用于操作和动画 SVG 的轻量级库。'
 ---
 
-## 首页
-> 网上暂时没有3.2版本的文档，所有自己翻译一份。水平有限，欢迎大家指正。
+## 介绍
+> 网上暂时没有3.2版本的文档，所以自己翻译了一份。水平有限，欢迎大家指正。
 >
-> 更新于 2024-12-18
+> 更新于 2024-12-19
 
-<h3>前言</h3>
+<h2>前言</h2>
 
 > 用于操作和动画 SVG 的轻量级库。
 >
 > 官网：[SVG.js](https://svgjs.dev/)
 
-<h4>为什么选择 SVG.js？</h4>
-SVG.js 没有依赖项，力求尽可能小巧，同时提供近乎完整的 SVG 规范。如果您还不相信，以下是一些亮点。
+<h3>为什么选择 SVG.js？</h3>
+SVG.js 没有任何依赖，旨在保持尽可能小的体积，同时尽可能全面地覆盖 SVG 规范。如果你还不确定，这里有一些亮点：
 
-<h5>速度很快。</h5>
+<h4>速度很快。</h4>
 SVG.js 很快。虽然不如 vanilla.js 快，但比竞争对手快很多倍：
 
 <iframe width="100%" height="320" src="//jsfiddle.net/Fuzzy/nmpL9g38/embedded/result/" frameborder="0" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>
+
+条件:
+
+- `rects`: <b>创建 10000 个矩形</b>
+- `fill`: <b>创建 10000 个矩形，并填充颜色</b>
+- `gradient`: <b>创建 10000 并填充渐变色</b>
+
+
+_相交其他产品用时快很多。测试环境： Intel Core i7-4702MQ @ 2.2GHz._
+
+<h3>易于阅读，语法简洁。</h3>
+仅使用 JavaScript 创建和操作 SVG 非常繁琐。例如，仅创建一个简单的粉色方块就需要相当多的代码：
+
+<iframe width="100%" height="300" src="//jsfiddle.net/wout/wsss6rj9/embedded/js,result/" frameborder="0" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>
+
+SVG.js 提供了简洁易读的语法。操作与上面的 vanilla.js 示例相同：
+
+```javascript
+// SVG.js
+var draw = SVG().addTo('#drawing'),
+    rect = draw.rect(100, 100).fill('#f06')
+```
+只需两行代码，而不是十行！而且不需要编写重复代码。
+
+<h3>编写复杂的动画。</h3>
+
+<iframe width="100%" height="500" src="//jsfiddle.net/Fuzzy/f2wbgx5a/embedded/result,js/" frameborder="0" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>
+
+<h3>更多功能。</h3>
+
+- 尺寸、位置、变换、颜色等动画效果
+- 得益于模块化结构，轻松扩展
+- 提供各种实用的插件
+- 统一的 API，适用于不同形状类型（如移动、调整大小、居中等）
+- 元素绑定事件
+- 完整支持透明度蒙版和裁剪路径
+- 支持文本路径，甚至可以实现动画效果
+- 元素分组功能
+- 动态渐变和图案
+- 完整文档支持（你正在阅读的就是 :)）
+
+<h4>License</h4>
+
+SVG.js MIT许可条款授权：[MIT License](https://github.com/svgdotjs/svg.js/blob/master/LICENSE.txt)
+
+<h4>更新日志</h4>
+
+获取最新版本中有哪些变化，请查看官方更新日志：[change log](https://github.com/svgdotjs/svg.js/blob/master/CHANGELOG.md).
+
+## 安装
+
+<h3>Npm</h3>
+
+``` bash
+npm install svg.js
+```
+
+<h3>Yarn</h3>
+
+``` bash
+yarn add svg.js
+```
+
+<h3>CDN.js / jsDelivr</h3>
+
+从 [cdnjs.com](https://cdnjs.com/libraries/svg.js) 或直接从 [jsdelivr](https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@latest/dist/svg.min.js) 获取最新版本。
+
+<h3>下载</h3>
+
+您可以在[GitHub release Page](https://github.com/svgdotjs/svg.js/releases/) 上找到所有版本。
+
+最新版本可以在这里找到: [svg.min.js](https://github.com/svgdotjs/svg.js/releases/tag/3.2.4)。
+
+为了获得最佳的开发体验，请确保源映射文件与库文件位于同一文件夹中。
+
+## 入门
+
+<h3>准备工作</h3>
+
+创建一个基本的 HTML 标记并引入 svg.js 脚本
+
+``` html
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>SVG.js</title>
+      <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
+    </head>
+    <body>
+
+    </body>
+</html>
+```
+
+或者直接在你的 JavaScript 应用中导入 svg.js
+
+``` javascript
+import { SVG } from '@svgdotjs/svg.js'
+```
+
+<b>注意：以前在全局 SVG 对象上可用的所有属性现在都需要通过导入来使用。</b>
+
+<h3>创建一个 SVG 画布</h3>
+
+接下来，使用 `SVG()` 函数创建一个 SVG画布 并将其添加到 HTML 页面中：
+
+``` javascript
+var draw = SVG().addTo('body').size(300, 300)
+var rect = draw.rect(100, 100).attr({ fill: '#f06' })
+```
+
+你可以传递任意 CSS 选择器给 `addTo`，或者直接传递一个节点。
+
+``` javascript
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300">
+    <rect width="100" height="100" fill="#f06"></rect>
+  </svg>
+</body>
+```
+
+SVG.js 不会自动设置画布的大小。因此请确保使用适当的值调用 `size()`。
+
+例如，要将大小设置为其父级的尺寸，请使用以下命令：
+
+``` javascript
+var draw = SVG().addTo('#someId').size('100%', '100%')
+```
+
+<h3>等待DOM加载</h3>
+
+这对许多人来说可能显而易见，但仍值得一提。如果你在页面的 `<head>` 中引入了 JavaScript 文件，请确保等待 DOM 加载完成后再执行代码：
+
+``` javascript
+SVG.on(document, 'DOMContentLoaded', function() {
+  var draw = SVG().addTo('body')
+})
+```
+
+如果你将 JavaScript 文件引入在页面底部，这就不需要使用。
+
+<h3>SVG文件中使用</h3>
+
+SVG.js 也可以在 HTML DOM 之外运行，例如在一个独立的 SVG 文件中：
+
+``` svg
+<?xml version="1.0" encoding="utf-8" ?>
+<svg id="drawing" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" >
+  <script type="text/javascript" xlink:href="svg.min.js"></script>
+  <script type="text/javascript">
+    <![CDATA[
+      var draw = SVG('#drawing')
+      draw.rect(100,100).animate().fill('#f03').move(100,100)
+    ]]>
+  </script>
+</svg>
+```
+
+<h3>SVG() 函数</h3>
+
+SVG() 函数不仅可以创建新的SVG画布，还可以从 DOM 中获取 svg.js 对象，或者通过 SVG 片段创建新的对象：
+
+``` javascript
+// new document
+var draw = SVG()
+
+// get rect from dom
+var rect = SVG('#myRectId')
+// or
+var rect = SVG('rect')
+// any css selector will do
+var path = SVG('#group1 path.myClass')
+
+// create new object from fragment
+var circle = SVG('<circle>')
+
+// convert node to svg.js object
+var obj = SVG(node)
+```
+
+<h3>练习</h3>
+
+为了帮助你快速入门，这里提供了一个基础设置。所有内容都已准备好，供你开始尝试。
+
+<iframe width="100%" height="300" src="//jsfiddle.net/Fuzzy/nc15b2tg/embedded/js,result/" frameborder="0" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>
+
+## 容器元素
+
+<h3>SVG.Container</h3>
+
+`SVG.Container` 类是所有可以包含其他元素的容器元素的基础包装类。
+
+继承结构为：`SVG.Base > SVG.EventTarget > SVG.Dom > SVG.Element > SVG.Container`。
+
+### SVG.Svg
+
+`SVG.Svg` 是 SVG.js 的主要初始化函数，它会在指定的元素中创建一个根 SVG 节点，并返回一个 `SVG.Svg` 的实例。
+
+<h4>**SVG()**</h4>
+
+返回的 `SVG.Svg` 继承自 `SVG.Container`。
+
+``` javascript
+var draw = SVG().addTo('#drawing')
+```
+
+_注意：_ 第一次调用 `SVG()` 时，会创建一个第二个不可见的 `<svg>` 元素。这是我们的解析器，具体说明请参阅 [常见问题解答](https://svgjs.dev/docs/3.2/faq/)
+
+一个SVG画布也可以在另一个SVG画布内部创建。这种情况下，它被称为嵌套SVG：
+
+<h4>**nested()**</h4>
+
+`SVG.Container`上的构造函数
+返回一个继承自`SVG.Container`的`SVG.Svg`对象
+
+``` javascript
+var nested = draw.nested()
+
+var rect = nested.rect(200, 200)
+```
+
+<h4>**`svg`.isRoot()**</h4>
+
+检测这个 `<svg>` 元素是否是根SVG元素。_注意_，如果该元素是文档片段（document-fragment）的直接子元素，这将返回 `false`。然而，如果该元素完全从DOM中分离出来，它将返回 `true`。
+
+<h4>**`svg`.namespace()**</h4>
+
+为SVG元素添加所需的SVG命名空间。在创建时会自动完成。如果你不需要这些命名空间，你可以使用 `removeNamespaces()` 方法来移除它们。
+
+<h4>**`svg`.removeNamespaces()**</h4>
+
+从 svg 元素中删除 svg 命名空间。
+
+### SVG.G
+
+
+### SVG.Symbol
+
+
+### SVG.Defs
+
+
+### SVG.A
