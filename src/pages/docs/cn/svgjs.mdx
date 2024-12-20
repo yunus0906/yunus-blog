@@ -8,7 +8,7 @@ description: '用于操作和动画 SVG 的轻量级库。'
 ## 介绍
 > 网上暂时没有3.2版本的文档，所以自己翻译了一份。水平有限，欢迎大家指正。
 >
-> 更新于 2024-12-19
+> 更新于 2024-12-20
 
 <h2>前言</h2>
 
@@ -19,7 +19,7 @@ description: '用于操作和动画 SVG 的轻量级库。'
 <h3>为什么选择 SVG.js？</h3>
 SVG.js 没有任何依赖，旨在保持尽可能小的体积，同时尽可能全面地覆盖 SVG 规范。如果你还不确定，这里有一些亮点：
 
-<h4>速度很快。</h4>
+<h4>**速度很快**</h4>
 SVG.js 很快。虽然不如 vanilla.js 快，但比竞争对手快很多倍：
 
 <iframe width="100%" height="320" src="//jsfiddle.net/Fuzzy/nmpL9g38/embedded/result/" frameborder="0" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>
@@ -40,7 +40,7 @@ _相交其他产品用时快很多。测试环境： Intel Core i7-4702MQ @ 2.2G
 
 SVG.js 提供了简洁易读的语法。操作与上面的 vanilla.js 示例相同：
 
-```javascript
+``` javascript
 // SVG.js
 var draw = SVG().addTo('#drawing'),
     rect = draw.rect(100, 100).fill('#f06')
@@ -64,11 +64,11 @@ var draw = SVG().addTo('#drawing'),
 - 动态渐变和图案
 - 完整文档支持（你正在阅读的就是 :)）
 
-<h4>License</h4>
+<h4>**License**</h4>
 
 SVG.js MIT许可条款授权：[MIT License](https://github.com/svgdotjs/svg.js/blob/master/LICENSE.txt)
 
-<h4>更新日志</h4>
+<h4>**更新日志**</h4>
 
 获取最新版本中有哪些变化，请查看官方更新日志：[change log](https://github.com/svgdotjs/svg.js/blob/master/CHANGELOG.md).
 
@@ -168,7 +168,7 @@ SVG.on(document, 'DOMContentLoaded', function() {
 
 SVG.js 也可以在 HTML DOM 之外运行，例如在一个独立的 SVG 文件中：
 
-``` svg
+``` plaintext
 <?xml version="1.0" encoding="utf-8" ?>
 <svg id="drawing" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" >
   <script type="text/javascript" xlink:href="svg.min.js"></script>
@@ -258,11 +258,151 @@ var rect = nested.rect(200, 200)
 
 ### SVG.G
 
+当你想要将一组元素当作一个整体变换时，你可以使用分组来完成。组内的所以元素，都会保持相对于它们所属组的位置不变。
+
+_注意：_ 组本身是没有形状的，它的形状都是继承自组内的元素的形状。因此，`SVG.G`不会相应`x`、`y`、`width` 和 `height`属性。 如果你需要操作这些属性，请使用 嵌套`nested()` 方法代替。
+
+<h4>**group()**</h4>
+
+`SVG.Container`上的构造函数
+返回一个继承自`SVG.Container`的`SVG.G`对象
+
+组具有与根 SVG 画布相同的所有元素方法：
+
+``` javascript
+var group = draw.group()
+group.path('M10,20L30,40')
+```
+
+画布上的现有元素也可以添加到组中：
+
+``` javascript
+var rect = draw.rect(100, 100)
+group.add(rect)
+```
 
 ### SVG.Symbol
 
+`SVG.Container`上的构造函数
+返回一个继承自`SVG.Container`的`SVG.Symbol`对象
+
+和组`group`类似，符号`symbol`也是一个容器元素。符号和组的唯一区别在于符号本身不会被渲染显示。因此，符号元素非常适合与使用`use`元素一起使用：
+
+``` javascript
+var symbol = draw.symbol()
+symbol.rect(100, 100).fill('#f09')
+
+var use = draw.use(symbol).move(200, 200)
+```
 
 ### SVG.Defs
 
+`<defs>`是用来存放被引用元素的容器。`<defs>`的后代元素不会被直接渲染。`<defs>`存在于主`<svg>`画布中，可以通过`defs()`方法访问。
+
+<h4>**defs()**</h4>
+
+`SVG.Container`上的构造函数
+返回一个继承自`SVG.Container`的`SVG.Defs`对象
+
+``` javascript
+var defs = draw.defs()
+```
+
+通过`root()`方法，`<defs>`也可以在任何其他元素上访问得到。
+
+``` javascript
+var defs = rect.root().defs()
+```
+
+`defs`的工作方式与组`group`完全相同。
 
 ### SVG.A
+
+创建一个可以在所有子元素上激活的超链接。
+
+<h4>**link()**</h4>
+
+`SVG.Container`上的构造函数
+返回一个继承自`SVG.Container`的`SVG.A`对象
+
+超链接或`<a>`标签会创建一个容器，使所有子元素都可以进行链接跳转：
+
+``` javascript
+var link = draw.link('https://svgdotjs.github.io/')
+var rect = link.rect(100, 100)
+```
+
+<h4>**`link`.to()**</h4>
+
+可以使用`to()`方法更新链接 url：
+``` javascript
+link.to('https://svgdotjs.github.io/')
+```
+<h4>**`link`.target()**</h4>
+
+`link()`可以通过`target()`方法来创建`target`属性：
+
+``` javascript
+link.target('_blank')
+```
+
+<h4>**`element`.linkTo()**</h4>
+
+元素可以用`linkTo()`方法以相反的方式链接：
+
+``` javascript
+rect.linkTo('https://svgdotjs.github.io/')
+```
+
+或者可以传递一个`function`而不是URL，以在链接元素上获得更多的选项。
+
+``` javascript
+rect.linkTo(function(link) {
+  link.to('https://svgdotjs.github.io/').target('_blank')
+})
+```
+
+<h4>**`element`.unlink()**</h4>
+
+移除元素的链接：
+
+``` javascript
+rect.unlink()
+```
+
+<h4>**`element`.linker()**</h4>
+
+判断元素是否有链接元素。如果没有，则返回`null`。
+
+``` javascript
+rect.linker() // returns the link
+```
+
+### SVG.Fragment
+
+svg片段`Fragment`是一个SVG内容片段`document-fragment`的包装器。虽然它不是容器`Container`类的一部分，但它仍然拥有所有构建元素的方法。
+你可以轻松的将你需要的SVG元素编辑到一个片段内，并且一次性将它们全部添加到DOM中。
+
+``` javascript
+const frag = new Fragment()
+frag.rect(100, 100)
+frag.circle(100, 100)
+
+draw.add(frag) // will add rect and circle
+```
+
+`SVG.Fragment`直接扩展了`SVG.Dom`，所以它支持`dom`的所有基本操作以及`svg`元素的导入和导出：
+
+``` javascript
+const frag = new Fragment()
+frag.rect(100, 100)
+frag.circle(100, 100)
+frag.first() // rect
+frag.last() // rect
+
+frag.svg() // <rect ... /><circle ... />
+```
+
+## 其他元素
+
+### SVG.js 元素的常规处理
