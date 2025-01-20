@@ -141,3 +141,31 @@ $(function(){
 	});
 });  
 ```
+
+## 自定义列表跨列功能
+``` javascript
+function mergeCellsForColumns(columnName) {
+	const gridId = "dataGrid";
+	let rows = $("#" + gridId + ",#" + gridId + "__frozen").find(">tbody>tr:gt(0):not(.jqgroup)");
+	// 选择器：获取 ID 为 gridId 和 gridId + "__frozen" 的元素，查找tbody下所有tr，过滤掉第一行(索引0)和jqgroup类的行
+
+	let firstCell = rows.eq(0).children("[aria-describedby='" + gridId + "_" + columnName + "']"),
+			columnIndex = firstCell.index(), // 获取该元素在行中的索引
+			rowspanCount = 1; // 初始化计数器rowspanCount
+
+	rows.slice(1).each(function(rowIndex, row) {
+		let currentCell = $(row).children("td").eq(columnIndex); // 获取当前tr中的指定列
+
+		if (firstCell.text() === currentCell.text()) {
+			rowspanCount++; // 如果该单元格的文本与前一个相同，增加计数器rowspanCount
+			currentCell.hide(); // 隐藏该单元格
+		} else {
+			firstCell.attr("rowspan", rowspanCount); // 否则，给当前单元格设置rowspan属性，表示跨行
+			// firstCell.text(inletTempList[firstCell.text()]); // 添加自定义展示内容
+			firstCell = currentCell; // 更新当前单元格为新的单元格
+			rowspanCount = 1; // 重置计数器rowspanCount
+		}
+		firstCell.attr("rowspan", rowspanCount); // 最后再设置当前单元格的rowspan
+	})
+}
+```
