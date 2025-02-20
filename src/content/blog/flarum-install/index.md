@@ -9,6 +9,8 @@ heroImage: { src: './thumbnail.jpg', color: '#B4C6DA' }
 language: '中文'
 ---
 
+## Flarum论坛
+
 Flarum论坛现在大家都人手一个了，我也模仿学习一下，记录一下。
 
 ### 准备工作
