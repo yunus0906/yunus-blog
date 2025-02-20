@@ -3,7 +3,7 @@ title: Axure Cloud 本地部署
 publishDate: 2025-02-15
 description: 'Axure Cloud for Business On-Premises 本地服务端部署'
 tags:
-  - Axure
+  - axure
 heroImage: { src: './thumbnail.jpg', color: '#64574D' }
 language: '中文'
 ---
